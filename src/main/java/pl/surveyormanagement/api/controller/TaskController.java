@@ -70,7 +70,7 @@ public class TaskController {
 		}
 	}
 
-	@GetMapping("/task/{managerId}/{taskDate}")
+	@GetMapping("/tasks/{managerId}/{taskDate}")
 	@PreAuthorize("hasRole('MANAGER')")
 	public ResponseEntity<?> getTasks(@Valid @PathVariable long managerId, @PathVariable LocalDate taskDate) {
 		try {

@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import pl.surveyormanagement.api.entities.Equipment;
 import pl.surveyormanagement.api.entities.Order;
 import pl.surveyormanagement.api.entities.User;
@@ -22,6 +24,7 @@ public class TaskPostRequest {
 	private Set<Vehicle> vehicles;
 
 	@NotNull
+	@JsonFormat(pattern="dd.MM.yyyy", shape = JsonFormat.Shape.STRING)
     private LocalDate taskDate;
 	
 	@NotNull
