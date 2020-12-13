@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -111,6 +112,8 @@ public class VehicleController {
 			vehicleDAO.deleteById(id);
 
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (DataIntegrityViolationException e) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Pojazd jest przypisany do istniejącego zadania. Usunięcie niemożliwe"));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Wystąpił błąd podczas usuwania danych"));
 		}
