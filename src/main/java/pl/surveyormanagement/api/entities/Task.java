@@ -52,6 +52,7 @@ public class Task {
 	@ManyToOne(cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "manager_id")
 	private User manager;
+	@JsonIgnore
 	@OneToMany(mappedBy = "manager")
 	private Set<User> employees = new HashSet<User>();
 

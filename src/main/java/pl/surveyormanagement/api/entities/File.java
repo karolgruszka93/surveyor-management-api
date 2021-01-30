@@ -27,7 +27,6 @@ public class File {
 	private String location;
 	
 	@JsonIgnore
-	@NotNull
 	@ManyToOne(cascade = { CascadeType.REFRESH })
 	@JoinColumn(name = "task_id")
 	private Task task;

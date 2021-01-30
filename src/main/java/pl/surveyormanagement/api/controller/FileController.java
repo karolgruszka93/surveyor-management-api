@@ -55,7 +55,7 @@ public class FileController {
 	FileDAO fileDAO;
 	
 	@PostMapping("/upload")
-	@PreAuthorize("hasRole('MANAGER')")
+	@PreAuthorize("hasRole('MANAGER')" + "|| hasRole('EMPLOYEE')")
 	public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("taskId") long taskId) {
 		try {
 			Path location = fileStorageService.save(file);
@@ -72,7 +72,7 @@ public class FileController {
 	}
 	
 	@GetMapping("/files/{taskId}")
-	@PreAuthorize("hasRole('MANAGER')")
+	@PreAuthorize("hasRole('MANAGER')" + "|| hasRole('EMPLOYEE')")
 	public ResponseEntity<?> getFilesList(@Valid @PathVariable long taskId) {
 		try {
 			List<File> filesList = new ArrayList<File>();
@@ -127,7 +127,7 @@ public class FileController {
 	}
 	
 	@GetMapping("/downloadtoken/{fileId}")
-	@PreAuthorize("hasRole('MANAGER')")
+	@PreAuthorize("hasRole('MANAGER')" + "|| hasRole('EMPLOYEE')")
 	public String generateDownloadToken(@Valid @PathVariable long fileId) {
 
 		return Jwts.builder()

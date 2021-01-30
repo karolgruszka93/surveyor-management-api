@@ -98,11 +98,11 @@ public class TaskController {
 		}
 	}
 	
-	@GetMapping("/task/vehicles/{user}/{taskDate}")
+	@GetMapping("/tasks/employee/{userId}/{taskDate}")
 	@PreAuthorize("hasRole('EMPLOYEE')")
-	public ResponseEntity<?> getVehiclesTask(@Valid @PathVariable User user, @PathVariable LocalDate taskDate) {
+	public ResponseEntity<?> getEmployeeTasks(@Valid @PathVariable long userId, @PathVariable LocalDate taskDate) {
 		try {
-			List<Task> tasksList = filterTasksListByUser(user);
+			List<Task> tasksList = taskDAO.findByUsers_Id(userId);
 
 			if (tasksList.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -110,66 +110,12 @@ public class TaskController {
 
 			List<Task> filteredTasksList = filterTasksListByDate(tasksList, taskDate);
 
-			Set<Vehicle> vehiclesSet = new HashSet<Vehicle>();
-
-			for (Task task : filteredTasksList) {
-				vehiclesSet = task.getVehicles();
-			}
-
-			return new ResponseEntity<>(vehiclesSet, HttpStatus.OK);
+			return new ResponseEntity<>(filteredTasksList, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Wystąpił błąd podczas pobierania danych"));
 		}
 	}
 
-	@GetMapping("/task/equipments/{user}/{taskDate}")
-	@PreAuthorize("hasRole('EMPLOYEE')")
-	public ResponseEntity<?> getEquipmentsTask(@Valid @PathVariable User user, @PathVariable LocalDate taskDate) {
-		try {
-			List<Task> tasksList = filterTasksListByUser(user);
-
-			if (tasksList.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-
-			List<Task> filteredTasksList = filterTasksListByDate(tasksList, taskDate);
-
-			Set<Equipment> equipmentsList = new HashSet<Equipment>();
-
-			for (Task task : filteredTasksList) {
-				equipmentsList = task.getEquipments();
-			}
-
-			return new ResponseEntity<>(equipmentsList, HttpStatus.OK);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(new MessageResponse("Wystąpił błąd podczas pobierania danych"));
-		}
-	}
-
-	@GetMapping("/task/orders/{user}/{taskDate}")
-	@PreAuthorize("hasRole('EMPLOYEE')")
-	public ResponseEntity<?> getOrdersTask(@Valid @PathVariable User user, @PathVariable LocalDate taskDate) {
-		try {
-			List<Task> tasksList = filterTasksListByUser(user);
-
-			if (tasksList.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-
-			List<Task> filteredTasksList = filterTasksListByDate(tasksList, taskDate);
-		
-			Set<Order> ordersList = new HashSet<Order>();
-
-			for (Task task : filteredTasksList) {
-				ordersList = task.getOrders();
-			}
-
-			return new ResponseEntity<>(ordersList, HttpStatus.OK);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(new MessageResponse("Wystąpił błąd podczas pobierania danych"));
-		}
-	}
-	
 	public List<Task> filterTasksListByUser(User user)
 	{
 		List<Task> tasksList = new ArrayList<Task>();

@@ -40,7 +40,7 @@ public class CommentController {
 	CommentDAO commentDAO;
 	
 	@PostMapping("/comment")
-	@PreAuthorize("hasRole('MANAGER')")
+	@PreAuthorize("hasRole('MANAGER')" + "|| hasRole('EMPLOYEE')")
 	public ResponseEntity<?> createComment(@Valid @RequestBody CommentPostRequest commentPostRequest) {
 		try {
 			String commentValue = commentPostRequest.getComment();
@@ -64,7 +64,7 @@ public class CommentController {
 	}
 	
 	@GetMapping("/comments/{taskId}")
-	@PreAuthorize("hasRole('MANAGER')")
+	@PreAuthorize("hasRole('MANAGER')" + "|| hasRole('EMPLOYEE')")
 	public ResponseEntity<?> getComments(@Valid @PathVariable long taskId) {
 		try {
 			List<Comment> commentsList = new ArrayList<Comment>();
@@ -76,5 +76,4 @@ public class CommentController {
 			return ResponseEntity.badRequest().body(new MessageResponse("Wystąpił błąd podczas pobierania danych"));
 		}
 	}
-
 }
